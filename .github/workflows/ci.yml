@@ -1,0 +1,53 @@
+name: DayZero CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  test-and-verify:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Build & Test Shared Logic
+        run: |
+          npm run build --workspace=@dayzero/shared
+          node --test packages/shared/test/shared.test.mjs
+
+      - name: Test Web Integration
+        run: |
+          node --test web/test/web.test.mjs
+
+      - name: Build Web Production Bundle
+        run: |
+          npm run build --workspace=@dayzero/web
+
+      - name: Test Android App Configuration & Assets
+        run: |
+          node --test app/test/app.test.mjs
+
+      - name: Download & Test PocketBase Backend Security
+        run: |
+          cd server
+          PB_VERSION="0.40.6"
+          curl -sSL "https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip" -o pocketbase.zip
+          unzip -q pocketbase.zip
+          chmod +x pocketbase
+          ./pocketbase serve --dir=pb_data --hooksDir=pb_hooks --migrationsDir=pb_migrations --http=127.0.0.1:8090 &
+          sleep 3
+          node seed/seed.mjs
+          node --test test/security.test.mjs

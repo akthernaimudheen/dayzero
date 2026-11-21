@@ -1,0 +1,23 @@
+node_modules/
+dist/
+.next/
+.expo/
+build/
+backups/
+*.zip
+*.log
+
+# Local PocketBase runtime data — never commit databases, uploads or backups
+server/pb_data/
+server/*.zip
+server/pocketbase.exe
+server/pocketbase
+server/.superuser
+server/pb_public/
+
+# Local secrets / credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.key

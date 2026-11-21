@@ -1,0 +1,144 @@
+:root {
+  --ivory: #F6F2E9;
+  --sage: #547A61;
+  --deep-olive: #283D30;
+  --pale-sage: #E8EEE3;
+  --terracotta: #B87858;
+  --coral: #D98E79;
+
+  --bg: #F6F2E9;
+  --surface: #FFFFFF;
+  --surface-raised: #FAF7F2;
+  --text-main: #283D30;
+  --text-muted: #4B6B56;
+  --border-light: #DCE3D6;
+  --border-accent: #547A61;
+  --radius: 12px;
+  --radius-sm: 6px;
+  --radius-lg: 18px;
+  --shadow-sm: 0 1px 3px rgba(40, 61, 48, 0.06);
+  --shadow-md: 0 4px 12px rgba(40, 61, 48, 0.08);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--text-main);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Malayalam", "Manjari", "Gayathri", sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+button, input, select, textarea {
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+a {
+  color: var(--sage);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Common Layout Components */
+.container {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius);
+  padding: 1.25rem;
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.25rem;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease-in-out;
+}
+
+.btn-primary {
+  background-color: var(--sage);
+  color: #FFFFFF;
+}
+
+.btn-primary:hover {
+  background-color: var(--deep-olive);
+}
+
+.btn-secondary {
+  background-color: var(--pale-sage);
+  color: var(--deep-olive);
+  border-color: var(--border-light);
+}
+
+.btn-secondary:hover {
+  background-color: #D6E0CF;
+}
+
+.btn-emergency {
+  background-color: var(--terracotta);
+  color: #FFFFFF;
+  font-weight: 600;
+}
+
+.btn-emergency:hover {
+  background-color: #A26547;
+}
+
+.btn-danger {
+  background-color: #C94A4A;
+  color: #FFFFFF;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 9999px;
+}
+
+.badge-verified {
+  background-color: #E2EFE7;
+  color: #2D6A4F;
+  border: 1px solid #B7DFC7;
+}
+
+.badge-stale {
+  background-color: #FFF3E0;
+  color: #B26A00;
+  border: 1px solid #FFE0B2;
+}
+
+.badge-emergency {
+  background-color: #FCE8E6;
+  color: #C53929;
+  border: 1px solid #F5C6CB;
+}
+
+/* Accessibility */
+:focus-visible {
+  outline: 2px solid var(--sage);
+  outline-offset: 2px;
+}

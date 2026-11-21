@@ -1,0 +1,47 @@
+# DayZero Caddy Reverse Proxy Configuration
+# Caddy automatically provisions and renews Let's Encrypt / ZeroSSL HTTPS certificates.
+# Replace dayzero.example.org with your actual domain or use internal IP for intranet.
+
+dayzero.example.org {
+    # Security Headers
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+        X-Content-Type-Options "nosniff"
+        X-Frame-Options "DENY"
+        X-XSS-Protection "1; mode=block"
+        Referrer-Policy "strict-origin-when-cross-origin"
+        Permissions-Policy "camera=(), microphone=(), geolocation=(self)"
+        Content-Security-Policy "default-src 'self'; script-src 'self' 'unsafe-inline' https://unpkg.com; style-src 'self' 'unsafe-inline' https://unpkg.com; img-src 'self' data: https://*.tile.openstreetmap.org; connect-src 'self' https:; font-src 'self' data:;"
+    }
+
+    # Compress responses
+    encode gzip zstd
+
+    # Route /api/ to PocketBase self-hosted backend
+    handle /api/* {
+        reverse_proxy 127.0.0.1:8090 {
+            header_up Host {host}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+        }
+    }
+
+    # Route /_/ (PocketBase admin dashboard) - recommend restricting to localhost / VPN in production
+    handle /_/* {
+        reverse_proxy 127.0.0.1:8090
+    }
+
+    # Route everything else to Next.js Web frontend
+    handle {
+        reverse_proxy 127.0.0.1:3000
+    }
+
+    # Logging
+    log {
+        output file /var/log/caddy/dayzero_access.log {
+            roll_size 10MiB
+            roll_keep 5
+        }
+    }
+}

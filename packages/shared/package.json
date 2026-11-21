@@ -1,0 +1,17 @@
+{
+  "name": "@dayzero/shared",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Shared business logic, calculations, transliteration and i18n for DayZero",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "node --test test/*.test.mjs"
+  },
+  "keywords": ["dayzero", "recovery", "privacy"],
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}

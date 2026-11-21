@@ -1,0 +1,22 @@
+{
+  "name": "dayzero-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "web",
+    "app"
+  ],
+  "scripts": {
+    "test:server": "cd server && node --test test/security.test.mjs",
+    "test:shared": "cd packages/shared && node --test test/shared.test.mjs",
+    "test:web": "node --test web/test/web.test.mjs",
+    "test:app": "node --test app/test/app.test.mjs",
+    "test": "npm run test:server && npm run test:shared && npm run test:web && npm run test:app",
+    "build:shared": "npm run build --workspace=@dayzero/shared",
+    "build:web": "npm run build --workspace=@dayzero/web",
+    "build": "npm run build:shared && npm run build:web"
+  },
+  "keywords": ["dayzero", "open-source", "recovery"],
+  "license": "MIT"
+}

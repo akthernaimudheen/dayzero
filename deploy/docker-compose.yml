@@ -1,0 +1,43 @@
+# DayZero Zero-Licence Self-Hosted Deployment
+# Combines PocketBase + Caddy + Next.js web container
+services:
+  pocketbase:
+    image: ghcr.io/muchobien/pocketbase:latest
+    container_name: dayzero-pocketbase
+    restart: unless-stopped
+    command:
+      - /pocketbase/pocketbase
+      - serve
+      - --dir=/pb_data
+      - --hooksDir=/pb_hooks
+      - --migrationsDir=/pb_migrations
+      - --http=0.0.0.0:8090
+    volumes:
+      - ./server/pb_data:/pb_data
+      - ./server/pb_hooks:/pb_hooks:ro
+      - ./server/pb_migrations:/pb_migrations:ro
+    ports:
+      - "127.0.0.1:8090:8090"
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://127.0.0.1:8090/api/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: dayzero-caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - pocketbase
+
+volumes:
+  caddy_data:
+  caddy_config:

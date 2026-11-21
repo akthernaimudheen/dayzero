@@ -1,0 +1,25 @@
+[Unit]
+Description=DayZero PocketBase Self-Hosted Backend Service
+After=network.target
+
+[Service]
+Type=simple
+User=dayzero
+Group=dayzero
+WorkingDirectory=/opt/dayzero/server
+ExecStart=/opt/dayzero/server/pocketbase serve --dir=/opt/dayzero/server/pb_data --hooksDir=/opt/dayzero/server/pb_hooks --migrationsDir=/opt/dayzero/server/pb_migrations --http=127.0.0.1:8090
+Restart=always
+RestartSec=5
+LimitNOFILE=65536
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=dayzero-pb
+
+# Hardening
+ProtectSystem=full
+ProtectHome=true
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

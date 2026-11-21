@@ -1,0 +1,26 @@
+{
+  "name": "@dayzero/app",
+  "version": "1.0.0",
+  "main": "index.ts",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo run:android",
+    "test": "node --test test/*.test.mjs",
+    "ios": "expo run:ios"
+  },
+  "dependencies": {
+    "@dayzero/shared": "*",
+    "expo": "^52.0.0",
+    "expo-constants": "^17.0.0",
+    "expo-linking": "^7.0.0",
+    "expo-status-bar": "^2.0.0",
+    "react": "18.3.1",
+    "react-native": "0.76.6"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-native": "^0.72.8",
+    "typescript": "^5.7.0"
+  },
+  "private": true
+}
