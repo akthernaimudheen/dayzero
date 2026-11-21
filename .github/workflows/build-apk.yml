@@ -42,7 +42,7 @@ jobs:
         run: |
           cd app/android
           chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon
+          ./gradlew assembleRelease --no-daemon -Pandroidx.compose.compiler.suppressKotlinVersionCompatibilityCheck=true
 
       - name: Upload Shareable APK Artifact
         uses: actions/upload-artifact@v4
