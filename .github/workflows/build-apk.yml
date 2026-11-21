@@ -33,6 +33,12 @@ jobs:
       - name: Install Monorepo Dependencies
         run: npm ci || npm install
 
+      - name: Prune Unused Native Modules
+        run: |
+          rm -rf node_modules/expo-constants app/node_modules/expo-constants
+          rm -rf node_modules/expo-linking app/node_modules/expo-linking
+          rm -rf node_modules/expo-status-bar app/node_modules/expo-status-bar
+
       - name: Build Shared Logic
         run: npm run build:shared
 

@@ -8,7 +8,7 @@
 // coordinates, operating hours, or cost claims.  Where a claim is not
 // verifiable it is labelled honestly.
 
-import { readFileSync, writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync, existsSync } from "node:fs";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -21,9 +21,11 @@ const SUPERUSER_FILE = join(SERVER_DIR, ".superuser");
 const BASE = "http://127.0.0.1:8090/api";
 
 async function getAdminToken() {
-    const savedSuperuser = readFileSync(SUPERUSER_FILE, "utf8").trim();
-    if (savedSuperuser) {
-        return savedSuperuser;
+    if (existsSync(SUPERUSER_FILE)) {
+        const savedSuperuser = readFileSync(SUPERUSER_FILE, "utf8").trim();
+        if (savedSuperuser) {
+            return savedSuperuser;
+        }
     }
     const email = readFileSync(ADMIN_EMAIL_FILE, "utf8").trim();
     const password = readFileSync(ADMIN_PASSWORD_FILE, "utf8").trim();
