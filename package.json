@@ -17,6 +17,9 @@
     "build:web": "npm run build --workspace=@dayzero/web",
     "build": "npm run build:shared && npm run build:web"
   },
+  "overrides": {
+    "react-native": "0.76.6"
+  },
   "keywords": ["dayzero", "open-source", "recovery"],
   "license": "MIT"
 }

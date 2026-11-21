@@ -20,11 +20,15 @@ const SUPERUSER_FILE = join(SERVER_DIR, ".superuser");
 
 const BASE = "http://127.0.0.1:8090/api";
 
+let cachedToken = null;
+
 async function getAdminToken() {
+    if (cachedToken) return cachedToken;
     if (existsSync(SUPERUSER_FILE)) {
         const savedSuperuser = readFileSync(SUPERUSER_FILE, "utf8").trim();
         if (savedSuperuser) {
-            return savedSuperuser;
+            cachedToken = savedSuperuser;
+            return cachedToken;
         }
     }
     const email = readFileSync(ADMIN_EMAIL_FILE, "utf8").trim();
@@ -38,8 +42,9 @@ async function getAdminToken() {
     if (!j.token) {
         throw new Error(`admin login failed: ${JSON.stringify(j)}`);
     }
+    cachedToken = j.token;
     writeFileSync(SUPERUSER_FILE, j.token);
-    return j.token;
+    return cachedToken;
 }
 
 async function adminFetch(path, method = "GET", body) {
@@ -398,13 +403,13 @@ const helplines = [
     },
 ];
 
-await Promise.all(facilities.map((f) =>
-    createOrUpdate("facilities", `name = '${f.name}'`, f)
-));
+for (const f of facilities) {
+    await createOrUpdate("facilities", `name = '${f.name}'`, f);
+}
 
-await Promise.all(helplines.map((h) =>
-    createOrUpdate("helplines", `number = '${h.number}'`, h)
-));
+for (const h of helplines) {
+    await createOrUpdate("helplines", `number = '${h.number}'`, h);
+}
 
 const facilitiesTotal = (await adminFetch("/collections/facilities/records?limit=1")).totalItems;
 const helplinesTotal = (await adminFetch("/collections/helplines/records?limit=1")).totalItems;
