@@ -32,7 +32,7 @@ async function getAdminToken() {
     const r = await fetch(`${BASE}/collections/_superusers/auth-with-password`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ identity: email, password }),
     });
     const j = await r.json();
     if (!j.token) {
