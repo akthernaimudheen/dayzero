@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   StatusBar,
 } from 'react-native';
-import { StatusBar as ExpoStatusBar } from 'expo-status-bar';
 import { t, type SupportedLanguage } from '@dayzero/shared';
 import { COLORS } from './src/theme';
 import { CompanionScreen } from './src/screens/CompanionScreen';
@@ -32,7 +31,7 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ExpoStatusBar style="light" backgroundColor={COLORS.deepOlive} />
+      <StatusBar barStyle="light-content" backgroundColor={COLORS.deepOlive} />
 
       {/* Top Header */}
       <View style={styles.header}>

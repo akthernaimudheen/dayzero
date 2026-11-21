@@ -36,13 +36,8 @@ jobs:
       - name: Build Shared Logic
         run: npm run build:shared
 
-      - name: Verify Android Native Project
-        run: |
-          if [ ! -d "app/android" ]; then
-            cd app && npx expo prebuild --platform android --no-install
-          else
-            echo "app/android already present and configured."
-          fi
+      - name: Patch Expo Gradle Compatibility
+        run: node scripts/patch_expo_gradle.mjs
 
       - name: Build Standalone Release APK with Gradle
         run: |

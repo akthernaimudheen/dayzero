@@ -20,7 +20,7 @@ const SUPERUSER_FILE = join(SERVER_DIR, ".superuser");
 
 const BASE = "http://127.0.0.1:8090/api";
 
-function getAdminToken() {
+async function getAdminToken() {
     const savedSuperuser = readFileSync(SUPERUSER_FILE, "utf8").trim();
     if (savedSuperuser) {
         return savedSuperuser;
@@ -40,8 +40,8 @@ function getAdminToken() {
     return j.token;
 }
 
-function adminFetch(path, method = "GET", body) {
-    const token = getAdminToken();
+async function adminFetch(path, method = "GET", body) {
+    const token = await getAdminToken();
     const headers = { Authorization: `Bearer ${token}` };
     if (body !== undefined) headers["Content-Type"] = "application/json";
     const r = await fetch(`${BASE}${path}`, { method, headers, body: body ? JSON.stringify(body) : undefined });
@@ -52,10 +52,10 @@ function adminFetch(path, method = "GET", body) {
     return j;
 }
 
-function createOrUpdate(collection, filter, data) {
-    const existing = adminFetch(`/collections/${collection}/records?filter=${encodeURIComponent(filter)}&limit=1`);
+async function createOrUpdate(collection, filter, data) {
+    const existing = await adminFetch(`/collections/${collection}/records?filter=${encodeURIComponent(filter)}&limit=1`);
     if (existing.totalItems === 0) {
-        const created = adminFetch(`/collections/${collection}/records`, "POST", data);
+        const created = await adminFetch(`/collections/${collection}/records`, "POST", data);
         console.log(`seed created ${collection}: ${data.name || data.code}`);
         return created;
     }
@@ -74,11 +74,11 @@ function createOrUpdate(collection, filter, data) {
     if (data.phone !== undefined) patch.phone = data.phone;
     if (data.lat !== undefined) patch.lat = data.lat;
     if (data.lng !== undefined) patch.lng = data.lng;
-    if (Object.keys(patch)) {
-        adminFetch(`/collections/${collection}/records/${existingId}`, "PATCH", patch);
+    if (Object.keys(patch).length > 0) {
+        await adminFetch(`/collections/${collection}/records/${existingId}`, "PATCH", patch);
         console.log(`seed refreshed ${collection}: ${data.name || data.code}`);
     }
-    return adminFetch(`/collections/${collection}/records/${existingId}`);
+    return await adminFetch(`/collections/${collection}/records/${existingId}`);
 }
 
 const TODAY = new Date().toISOString().slice(0, 10);

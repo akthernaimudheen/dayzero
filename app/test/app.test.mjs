@@ -30,11 +30,11 @@ describe('Android Expo App Configuration & Assets', () => {
     if (fs.existsSync(manifestPath)) {
       const manifest = fs.readFileSync(manifestPath, 'utf8');
       assert.ok(manifest.includes('android.permission.INTERNET'));
-      assert.strictEqual(manifest.includes('android.permission.READ_EXTERNAL_STORAGE'), false);
-      assert.strictEqual(manifest.includes('android.permission.WRITE_EXTERNAL_STORAGE'), false);
-      assert.strictEqual(manifest.includes('android.permission.SYSTEM_ALERT_WINDOW'), false);
-      assert.strictEqual(manifest.includes('android.permission.READ_CONTACTS'), false);
-      assert.strictEqual(manifest.includes('android.permission.ACCESS_FINE_LOCATION'), false);
+      const grantedPermissions = manifest.split('\n')
+        .filter(line => line.includes('<uses-permission') && !line.includes('tools:node="remove"'))
+        .map(line => line.match(/android:name="([^"]+)"/)?.[1])
+        .filter(Boolean);
+      assert.deepStrictEqual(grantedPermissions, ['android.permission.INTERNET']);
     }
   });
 

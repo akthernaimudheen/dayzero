@@ -47,6 +47,9 @@ jobs:
           curl -sSL "https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip" -o pocketbase.zip
           unzip -q -o pocketbase.zip
           chmod +x pocketbase
+          echo "admin@dayzero.test" > .admin_email
+          echo "n0tForProduction-su!" > .admin_password
+          ./pocketbase superuser upsert admin@dayzero.test n0tForProduction-su! --dir=pb_data
           ./pocketbase serve --dir=pb_data --hooksDir=pb_hooks --migrationsDir=pb_migrations --http=127.0.0.1:8090 &
           sleep 3
           node seed/seed.mjs
