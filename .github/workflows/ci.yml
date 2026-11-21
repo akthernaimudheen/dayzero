@@ -45,7 +45,7 @@ jobs:
           cd server
           PB_VERSION="0.40.6"
           curl -sSL "https://github.com/pocketbase/pocketbase/releases/download/v${PB_VERSION}/pocketbase_${PB_VERSION}_linux_amd64.zip" -o pocketbase.zip
-          unzip -q pocketbase.zip
+          unzip -q -o pocketbase.zip
           chmod +x pocketbase
           ./pocketbase serve --dir=pb_data --hooksDir=pb_hooks --migrationsDir=pb_migrations --http=127.0.0.1:8090 &
           sleep 3
